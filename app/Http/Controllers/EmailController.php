@@ -49,20 +49,22 @@ class EmailController extends Controller
     }
 
     public function sent_student_info(Request $request){
-        $student = [];
+
         $i = 0;
-        foreach ($request->name as $info){
-            $res = [
-                'id' => $info,
-              'name' =>   $request->name[$i],
-              'roll' =>   $request->roll[$i],
-            ];
-
-            array_push($student, $res);
-            $i++;
-
+        foreach ($request->name as $key => $info){
+            $student = new Student();
+            $student->name = $request->name[$key];
+            $student->roll = $request->roll[$key];
+            $student->save();
         }
-        return $student;
+//
+//        for ($i; $i < count($request->name); $i++){
+//            $student = new Student();
+//            $student->name = $request->name[$i];
+//            $student->roll = $request->roll[$i];
+//            $student->save();
+//        }
+        return redirect()->back();
 
 
 

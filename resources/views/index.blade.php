@@ -6,8 +6,8 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Dashboard</div>
-                    @if(Session::get('Success'))
-                        <h3 class="alert alert-success">{{ Session::get('Success') }}</h3>
+                    @if(Session::get('message'))
+                        <h3 class="alert alert-success">{{ Session::get('message') }}</h3>
                     @endif
                     <div class="card-body">
 {{--                        <table class="table table-bordered">--}}
@@ -57,6 +57,34 @@
                                 </form>
 
                             </div>
+
+
+                            <div class="card-body">
+                                @php($x = 0)
+                                <form action="{{ url('/sent/customer/sms') }}" method="post">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label>Enter Phone : </label>
+                                        <input type="text"  name="email" class="form-control" placeholder="Enter Your Number...">
+                                    </div>
+                                    {{--                                <div class="form-group">--}}
+                                    {{--                                    <label>Enter Subject : </label>--}}
+                                    {{--                                    <input type="text" name="sub" class="form-control" placeholder="Enter Your Subject...">--}}
+                                    {{--                                </div>--}}
+                                    <div class="form-group">
+                                        <label>Enter Message : </label>
+                                        <textarea name="message" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" name="btn" class="btn btn-danger btn-block">SubmiT</button>
+                                    </div>
+                                </form>
+
+                            </div>
+
+
+
+
                             @php($x = 0)
                             <form action="{{ url('/save/student') }}" method="post">
                                 @csrf
