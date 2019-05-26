@@ -10,6 +10,28 @@
                         <h3 class="alert alert-success">{{ Session::get('message') }}</h3>
                     @endif
                     <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($users as $key => $user)
+                                <tr>
+                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                </tr>
+                             @endforeach
+                            </tbody>
+                        </table>
+                        <form action="{{ url('/mail/send') }}" method="post">
+                            @csrf
+                            <input type="submit" name="btn" class="btn btn-danger" value="Send...">
+                        </form>
 {{--                        <table class="table table-bordered">--}}
 {{--                            <thead>--}}
 {{--                                <tr>--}}
@@ -37,7 +59,7 @@
                         <div class="card">
                             <div class="card-body">
                                 @php($x = 0)
-                                <form action="{{ url('/sent/customer/mail') }}" method="post">
+                                <form action="{{ url('/sent/customer/sms') }}" method="post">
                                     @csrf
                                     <div class="form-group">
                                         <label>Enter Email : </label>

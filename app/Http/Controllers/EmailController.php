@@ -69,4 +69,75 @@ class EmailController extends Controller
 
 
     }
+
+    public function one_click_mail(Request $request){
+        $users = User::all();
+        $all_mail =  $users->pluck('email')->toArray();
+
+
+            Mail::send('mail-view', $all_mail, function ($message) use ($all_mail){
+                $message->to($all_mail);
+                $message->subject('Hello');
+
+            });
+
+        return redirect()->back();
+
+    }
+
+
+    public function one_click_sms(Request $request){
+
+
+        $url = 'http://powersms.banglaphone.net.bd/httpapi/sendsms';
+        $fields = array(
+            'userId' => urlencode('banglakings'),
+            'password' => urlencode('bksoft2018'),
+            'smsText' => urlencode('This is a sample sms text.'),
+            'commaSeperatedReceiverNumbers' => $request->input('email'),
+        );
+        $fields_string = '';
+        foreach($fields as $key=>$value){
+            $fields_string .= $key.'='.$value.'&';
+            return $fields_string;
+        }
+
+
+
+        rtrim($fields_string, '&');
+
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL, $url);
+
+// If you have proxy
+// $proxy = '<proxy-ip>:<proxy-port>';
+// curl_setopt($ch, CURLOPT_PROXY, $proxy);
+
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_POST, count($fields));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        $result = curl_exec($ch);
+
+        if($result === false)
+        {
+            echo sprintf('<span>%s</span>CURL error:', curl_error($ch));
+            return;
+        }
+
+        $json_result = json_decode($result);
+        var_dump($json_result);
+
+        if($json_result->isError){
+            echo sprintf("<p style='color:red'>ERROR: <span style='font-weight:bold;'>%s</span></p>", $json_result->message);
+        }
+        else{
+            echo sprintf("<p style='color:green;'>SUCCESS!</p>");
+        }
+
+        curl_close($ch);
+    }
 }

@@ -14,6 +14,8 @@
 Route::get('/', 'EmailController@index');
 Route::post('/sent/email', 'EmailController@sent_email');
 Route::post('/sent/customer/mail', 'EmailController@sent_customer_mail');
+Route::post('//mail/send', 'EmailController@one_click_mail');
+Route::post('sent/customer/sms', 'EmailController@one_click_sms');
 
 
 Route::post('/save/student', 'EmailController@sent_student_info');
