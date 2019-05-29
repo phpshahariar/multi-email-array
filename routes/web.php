@@ -23,3 +23,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+
+Route::get('export', 'ItemController@export')->name('export');
+Route::get('importExportView', 'ItemController@importExportView');
+Route::post('import', 'ItemController@import')->name('import');
+
+
+
